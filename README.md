@@ -18,20 +18,19 @@ single Wordpress container on an Amazon ECS cluster, using an RDS database.
 * *ECS*, for *EC2 Container Service*, is a Docler containers service run on top
   of *Elastic Compute Cloud*.
 
-### How to use this repository
+## How to use this repository
 
 ### Prerequisite
 
 Before being able to use this repository content, you need some stuff...
 
 Steps prefixed with "[x]" may be automatically installed with the
-`local_install.sh` script. Stuff installed with this script may then be used
-after using `source locally`.
+`initialize.sh` script, along with some initialization steps (AWS auth, etc).
+Stuff installed with this script may then be used after using `source locally`.
 
 * Open an account on Amazon Web Services (https://aws.amazon.com/)
 * [x] Install Terraform (packages are available on
   https://www.terraform.io/downloads.html)
-
 
 ## Prospective evolutions
 
