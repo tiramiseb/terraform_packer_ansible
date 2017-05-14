@@ -31,6 +31,8 @@ Stuff installed with this script may then be used after using `source locally`.
 * Open an account on Amazon Web Services (https://aws.amazon.com/)
 * [x] Install Terraform (packages are available on
   https://www.terraform.io/downloads.html)
+* [x] Install Packer (packages are available on
+  https://www.packer.io/downloads.html)
 
 ## Prospective evolutions
 
