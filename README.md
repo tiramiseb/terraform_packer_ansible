@@ -69,6 +69,17 @@ When executing the `packer build` command:
 
 XXX
 
+### Files in this repository
+
+* `initialize.sh` is a script making it easier to initialize this project
+* `locally` is a file to be sources in order to easily use this project
+* `wordpress.packer` is the Packer configuration to create a Docker image for
+  the Wordpress server
+* `wordpress.playbook` is the Ansible playbook, describing the installation
+* `templates` contains configuration files (or templates) used by Ansible
+* `wordpress.tf` is the infrastructure definition for Terraform
+* `authentication.tf` is the authentication configuration for Terraform
+
 ## How to use this repository
 
 ### Prerequisite
