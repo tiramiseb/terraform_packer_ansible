@@ -33,6 +33,7 @@ then
 else
     read -p "Please provide your AWS access key: " awskey
     read -p "Please provide your AWS secret key: " awssecret
-    sed "s/ACCESS_KEY_HERE/$awskey/;s/SECRET_KEY_HERE/$awssecret/" authentication.tf.sample >> authentication.tf
+
+    sed "s|ACCESS_KEY_HERE|$awskey|;s|SECRET_KEY_HERE|$awssecret|" authentication.tf.sample >> authentication.tf
 fi
 
