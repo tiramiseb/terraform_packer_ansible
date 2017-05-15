@@ -168,6 +168,7 @@ following basic evolutions could be done:
 * Improve global security (active users, files authorizations, etc).
 * Install HTTPS support on the webserver, if it is not run behind a reverse
   proxy.
+* Separate the RDS admin authorization from the wordpress DB details.
 * Install a monitoring solution, in order to check everything is working
   correctly.
 * If local files may be modified (eg. media files upload), either use an
@@ -176,7 +177,13 @@ following basic evolutions could be done:
 
 ## Prospective evolutions
 
-XXX (HA/automation/improvement)
+There are many ways to improve this stuff:
+
+* First, use ELB for load balancing and therefore high availability.
+* Make a better use of Terraform possibilities (for instance, manage the ECR).
+* Automate the monitoring configuration (either automatic discovery of services
+  or definition in Terraform or Packer).
+* Probably many other possibilities...
 
 ## Difficulties and miscellaneous notes
 
