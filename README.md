@@ -33,6 +33,8 @@ Stuff installed with this script may then be used after using `source locally`.
   https://www.terraform.io/downloads.html)
 * [x] Install Packer (packages are available on
   https://www.packer.io/downloads.html)
+* [x] Create authentication.tf from authentication.tf.sample, with your
+  AWS authentication tokens
 
 ## Prospective evolutions
 
