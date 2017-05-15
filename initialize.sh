@@ -43,7 +43,7 @@ else
     echo "    → Downloading and extracting Packer 1.0.0"
     wget https://releases.hashicorp.com/packer/1.0.0/packer_1.0.0_linux_amd64.zip
     unzip packer_1.0.0_linux_amd64.zip
-    #rm packer_1.0.0_linux_amd64.zip
+    rm packer_1.0.0_linux_amd64.zip
 fi
 
 
