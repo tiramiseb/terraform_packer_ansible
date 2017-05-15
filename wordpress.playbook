@@ -1,1 +1,75 @@
+---
+- hosts: wordpress
+  tasks:
+    - name: Install NginX
+      apt: name=nginx
+    - name: Install PHP-FPM and dependencies
+      apt: name={{ item }}
+      with_items:
+        - php-fpm
+        - php-enchant
+        - php-mysql
+        - libphp-phpmailer
+        - libphp-simplepie
+        - php-xml
 
+    - name: Create the run directory for PHP-FPM
+      file:
+        path: /var/run/php
+        state: directory
+
+    - name: Disable Nginx default conf
+      file:
+        name: /etc/nginx/sites-enabled/default
+        state: absent
+    - name: Copy NginX configuration for Wordpress
+      copy:
+        src: nginx-wordpress.conf
+        dest: /etc/nginx/sites-available/wordpress
+    - name: Enable NginX configuration for Wordpress
+      file:
+        src: /etc/nginx/sites-available/wordpress
+        dest: /etc/nginx/sites-enabled/wordpress
+        state: link
+
+    - name: Disable default PHP-FPM pool
+      file:
+        name: /etc/php/7.0/fpm/pool.d/www.conf
+        state: absent
+    - name: Copy PHP-FPM configuration for Wordpress
+      copy:
+        src: phpfpm-wordpress.conf
+        dest: /etc/php/7.0/fpm/pool.d/wordpress.conf
+
+    - name: Download Wordpress
+      get_url:
+        url: http://wordpress.org/wordpress-4.7.4.tar.gz
+        dest: /srv/wordpress-4.7.4.tar.gz
+    - name: Extract archive
+      command: /bin/tar xvf wordpress-4.7.4.tar.gz creates=/srv/wordpress
+      args:
+        chdir: /srv
+        creates: /srv/wordpress
+    - name: Add group "wordpress"
+      group:
+        name: wordpress
+    - name: Add user "wordpress"
+      user:
+        name: wordpress
+        group: wordpress
+        system: yes
+        home: /srv/wordpress
+    - name: Fetch random salts for WordPress config
+      local_action: command wget -q -O- https://api.wordpress.org/secret-key/1.1/salt/
+      register: "wp_salt"
+      become: no
+      become_method: sudo
+    - name: Copy WordPress config file
+      template: src=wp-config.php dest=/srv/wordpress/
+    - name: Change ownership of WordPress installation (beware of security issues)
+      file: 
+        path: /srv/wordpress
+        owner: wordpress
+        group: wordpress
+        state: directory
+        recurse: yes

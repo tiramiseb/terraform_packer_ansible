@@ -20,7 +20,9 @@
         },
         {
             "type": "ansible-local",
-            "playbook_file": "wordpress.playbook"
+            "playbook_file": "wordpress.playbook",
+            "inventory_groups": "wordpress",
+            "playbook_dir": "templates"
         }
     ],
     "post-processors": [

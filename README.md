@@ -12,7 +12,8 @@ single Wordpress container on an Amazon ECS cluster, using an RDS database.
 
 I tried to do something simple and avoid fancy stuff. May howtos or docs use
 fancy features to show how interesting it is, but my goal is to make something
-that "just works".
+that "just works", hence the over-simplification, not use of some features
+(like ansible roles), etc.
 
 ### Previous knowledge
 
@@ -60,8 +61,8 @@ When executing the `packer build` command:
 
 * Packer executes Docker to create an image [builder]
 * Packer installs Ansible on the freshly-created image [provisioner]
-* Packer puts an Ansible playbook on the image [provisioner]
 * Packer executes Ansible with the playbook locally in the image [provisioner]
+* Ansible installs Wordpress and everything needed to make it work
 * Packer transfers the image in an EC2 Containers Repository [post-processor]
 
 ### How components interact for infrastructure deployment
@@ -146,29 +147,54 @@ If you want to remove everything created by Terraform, you may use:
 terraform destroy
 ```
 
+## Putting it in production
+
+This example shows very simple stuff, insufficient for production usage... The
+following basic evolutions could be done:
+
+* Use templates instead of copying files, in order to make stuff more generic
+  and allow re-using playbooks. Also, split the playbook into roles.
+* Improve global security (active users, files authorizations, etc).
+* Install HTTPS support on the webserver, if it is not run behind a reverse
+  proxy.
+* Install a monitoring solution, in order to check everything is working
+  correctly.
+* If local files may be modified (eg. media files upload), either use an
+  external storage solution (AWS EFS) or provide a way to backup and/or
+  synchronize these files.
+
 ## Prospective evolutions
 
 XXX (HA/automation/improvement)
 
-## Putting it in production
+## Difficulties and miscellaneous notes
 
-XXX
+Independently of this exercise, I have started when AWS had a problem with new
+accounts creation: I could not try this stuff at first because I was unable to
+use these tools. It was fixes a few hours later but that points out the
+problems that may occur when relying on a single provider.
 
-## Difficulties and miscellaneous stuff
+Terraform official documentation is illogical, args descriptions do not
+correspond to the example shown above them: I had to scramble around in order
+to create a working configuration.
 
-* Independently of this exercise, I have started it when AWS had a problem with
-  new accounts creation: I could not try this stuff at first because I was
-  unable to use these tools
-* Terraform official documentation is illogical, args description does not
-  correspond to the example shown above them: I had to scramble around in order
-  to create a working configuration
+As recreating the Wordpress installation from scratch is not relevant, the
+Ansible configuration is inspired from the wordpress-nginx example
+(https://github.com/ansible/ansible-examples/tree/master/wordpress-nginx).
 
-Other than that, no special problem: these tools are fairly simple to use...
+Of course, while preparing the Ansible configuration, I worked locally and
+created a simple Docker image in a tarfile, instead of commiting it and pushing
+it to ECR.
+
+Finally, I had no particular difficulties: these tools are fairly simple to
+use...
 
 Time spent from nothing to an existing Terraform+Packer+Ansible+Docker
 Wordpress mini-infrastructure (roughly):
 
 2017-05-14: 1h
-2017-05-15: 4h
+2017-05-15: 6h
 
-As usual, most of this time has been spent writing this document.
+As usual, most of this time has been spent writing documentation (in this case,
+documentation is simply this README), I also took much time writing the Ansible
+playbook.
