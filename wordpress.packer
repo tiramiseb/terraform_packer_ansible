@@ -15,9 +15,12 @@
     ],
     "provisioners": [
         {
-            "type": "file",
-            "source": "wordpress.playbook",
-            "destination": "/tmp/wordpress.playbook"
+            "type": "shell",
+            "inline": ["apt-get update", "apt-get install -y ansible"]
+        },
+        {
+            "type": "ansible-local",
+            "playbook_file": "wordpress.playbook"
         }
     ],
     "post-processors": [
