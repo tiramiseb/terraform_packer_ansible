@@ -1,3 +1,4 @@
 local_bin/
 authentication.tf
 terraform.tfstate*
+locally
