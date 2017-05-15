@@ -1,0 +1,39 @@
+{
+    "_comment": "Packer configuration to create a Wordpress container",
+    "variables": {
+        "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
+        "aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
+        "aws_login_server": "{{env `AWS_LOGIN_SERVER`}}",
+        "aws_repository_name": "{{env `AWS_REPOSITORY`}}"
+    },
+    "builders": [
+        {
+            "type": "docker",
+            "image": "ubuntu:latest",
+            "commit": true
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "wordpress.playbook",
+            "destination": "/tmp/wordpress.playbook"
+        }
+    ],
+    "post-processors": [
+        [
+            {
+                  "type": "docker-tag",
+                  "repository": "{{user `aws_login_server`}}/{{user `aws_repository_name`}}",
+                  "tag": "0.1"
+            },
+            {
+                  "type": "docker-push",
+                  "ecr_login": true,
+                  "aws_access_key": "{{user `aws_access_key`}}",
+                  "aws_secret_key": "{{user `aws_secret_key`}}",
+                  "login_server": "https://{{user `aws_login_server`}}/"
+            }    
+        ]
+    ]
+}
