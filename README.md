@@ -21,13 +21,20 @@ easily, with basic Linux administration knowlege.
 
 As for me, I already knew:
 
-* Wordpress: I know what a server like that one can do
-* Amazon Web Services: I already use this easy-to-user service
-* Docker: I do not work daily with that, but I already experimented it
-* Ansible: I tried in for 2 or 3 months in 2015, abandoned it for SaltStack
-  for professional reasons
+* Wordpress: I know what it is for... for this exercise, it is not really
+  relevant, apart from the fact I know how to install it.
+* Amazon Web Services: I already use this easy-to-user service.
+* Docker: I do not work daily with it, but I already experimented it (I didn't
+  like it regarding how I worked at that moment, but it is perfect for the
+  needs of automation).
+* Ansible: I tried in for 2 or 3 months in 2015, abandoned it in favor of
+  SaltStack for professional reasons (I worked with long-running server, most
+  important part was not to define how servers had to be installed but how they
+  must be maintained in a correct state).
 
 ## Components and their interactions
+
+### List of components
 
 * *Amazon Web Services* is a public cloud service, run by Amazon.
 * *EC2 Compute Cloud* is a virtual server hosting service, based on the
@@ -37,12 +44,29 @@ As for me, I already knew:
 * *ECS*, for *EC2 Container Service*, is a Docker containers service run on top
   of *Elastic Compute Cloud*: EC2 servers management is done by AWS tools,
   without any human intervention.
+* *ECR*, for *EC2 Container Repositories*, is a Docker images
 * *Terraform* is a piece of software that creates infrastructures based on
   configuration files; once given access to a cloud service (or event to local
   services, eg. a VMware infrastructure or a Docker server), it can create
   everything needed to make an infrastructure work.
 * *Packer* is a platform-agnostic tool allowing to create system images
   automatically, from a single configuration file.
+* *Ansible* is a IT automation tool, allowing to describe in configuration
+  files how to install a server.
+
+### How components interact for images preparation
+
+When executing the `packer build` command:
+
+* Packer executes Docker to create an image [builder]
+* Packer installs Ansible on the freshly-created image [provisioner]
+* Packer puts an Ansible playbook on the image [provisioner]
+* Packer executes Ansible with the playbook locally in the image [provisioner]
+* Packer transfers the image in an EC2 Containers Repository [post-processor]
+
+### How components interact for infrastructure deployment
+
+XXX
 
 ## How to use this repository
 
@@ -52,20 +76,49 @@ Before being able to use this repository content, you need some stuff...
 
 Steps prefixed with "[x]" may be automatically installed with the
 `initialize.sh` script, along with some initialization steps (AWS auth, etc).
-Stuff installed with this script may then be used after using `source locally`.
+This script has been tested on Ubuntu 17.04 and works only on Debian-based
+servers, with sudo activated (it must install Docker).
 
 * Open an account on Amazon Web Services (https://aws.amazon.com/), create a
-  user and activate API access (user management is done with the IAM service)
+  user and activate API access (user management is done with the IAM service).
+* Create an EC2 Container Repository (see the ECS service).
 * [x] Install Terraform (packages are available on
-  https://www.terraform.io/downloads.html)
+  https://www.terraform.io/downloads.html).
 * [x] Install Packer (packages are available on
-  https://www.packer.io/downloads.html)
-* [x] Create authentication.tf from authentication.tf.sample, with your
-  AWS authentication tokens
+  https://www.packer.io/downloads.html).
+* [x] Create authentication.tf from authentication.tf.template, with your
+  AWS authentication tokens.
+* [x] Create locally from locally.template, with your AWS authentication tokens
+  and stuff.
 
-### See what would be done
+After these steps, to use what has been installed, you need to:
 
-You can see what would be done by executing:
+```
+$ source locally
+```
+
+Then, the AWS credentials (and stuff) and the PATH are correctly present in
+the environment.
+
+### Check the image preparation
+
+To check Packer is able to generate an image, the needed command is:
+
+```
+packer validate wordpress.packer
+```
+
+### Generate the image
+
+To generate and upload the Wordpress server image:
+
+```
+packer build wordpress.packer
+```
+
+### See what would be deployed
+
+You can see what would be deployed by executing:
 
 ```
 terraform plan
@@ -110,7 +163,12 @@ XXX
   correspond to the example shown above them: I had to scramble around in order
   to create a working configuration
 
-Time spent (roughly):
+Other than that, no special problem: these tools are fairly simple to use...
+
+Time spent from nothing to an existing Terraform+Packer+Ansible+Docker
+Wordpress mini-infrastructure (roughly):
 
 2017-05-14: 1h
-2017-05-15: 1h
+2017-05-15: 4h
+
+As usual, most of this time has been spent writing this document.
