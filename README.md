@@ -182,12 +182,8 @@ XXX (HA/automation/improvement)
 
 Independently of this exercise, I have started when AWS had a problem with new
 accounts creation: I could not try this stuff at first because I was unable to
-use these tools. It was fixes a few hours later but that points out the
+use these tools. It was fixed a few hours later but that points out the
 problems that may occur when relying on a single provider.
-
-Terraform official documentation is illogical, args descriptions do not
-correspond to the example shown above them: I had to scramble around in order
-to create a working configuration.
 
 As recreating the Wordpress installation from scratch is not relevant, the
 Ansible configuration is inspired from the wordpress-nginx example
@@ -195,7 +191,7 @@ Ansible configuration is inspired from the wordpress-nginx example
 
 Of course, while preparing the Ansible configuration, I worked locally and
 created a simple Docker image in a tarfile, instead of commiting it and pushing
-it to ECR.
+it to ECR...
 
 Finally, I had no particular difficulties: these tools are fairly simple to
 use...
