@@ -12,9 +12,7 @@ single Wordpress container on an Amazon ECS cluster, using an RDS database.
 
 I tried to do something simple and avoid fancy stuff. May howtos or docs use
 fancy features to show how interesting it is, but my goal is to make something
-that "just works", hence the over-simplification, not use of some features
-(like ansible roles), etc. In particular, I used as few variables as possible
-in the Terraform configuration, for the sake if simplicity.
+that "just works", hence the over-simplification.
 
 ### Previous knowledge
 
@@ -100,10 +98,10 @@ them:
 
 Before being able to use this repository content, you need some stuff...
 
-Steps prefixed with "[x]" may be automatically installed with the
-`initialize.sh` script, along with some initialization steps (AWS auth, etc).
-This script has been tested on Ubuntu 17.04 and works only on Debian-based
-servers, with sudo activated (it must install Docker).
+Steps prefixed with "[x]" may be automatically done with the `initialize.sh`
+script, along with some initialization steps (AWS auth, etc). This script has
+been tested on Ubuntu 17.04 and works only on Debian-based servers, with sudo
+activated (it must install Docker).
 
 * Open an account on Amazon Web Services (https://aws.amazon.com/), create a
   user and activate API access (user management is done with the IAM service).
@@ -178,7 +176,9 @@ This example shows very simple stuff, insufficient for production usage... The
 following basic evolutions could be done:
 
 * Docker usage is really basic, honestly I'm really not satisfied about how I
-  have configured it.
+  have configured it and I would make it again from scratch if I needed to put
+  that in production. I would separate this in two containers, one for nginx
+  and one for PHP-FPM.
 * Use templates instead of copying files, in order to make stuff more generic
   and allow re-using playbooks. Also, split the playbook into roles.
 * Do not use a single admin IAM role.
@@ -208,36 +208,39 @@ There are many ways to improve this stuff:
   launched whenever it is needed.
 * Probably many other possibilities...
 
+Of course, some of these evolutions may be needed when putting in production,
+depending on the criticality of the service.
+
 ## Difficulties and miscellaneous notes
 
-Independently of this exercise, I have started when AWS had a problem with new
-accounts creation: I could not try this stuff at first because I was unable to
-use these tools. It was fixed a few hours later but that points out the
-problems that may occur when relying on a single provider. Moreover, pushes
+Independently of this exercise itself, I have started when AWS had a problem
+with new accounts creation: I could not try this stuff at first because I was
+unable to use these tools. It was fixed a few hours later but that points out
+the problems that may occur when relying on a single provider. Moreover, pushes
 to ECR were painfully slow: 300kB/s.
 
-As recreating the Wordpress installation from scratch is not relevant, the
-Ansible configuration is inspired from the wordpress-nginx example
+The Ansible configuration is inspired from the wordpress-nginx example
 (https://github.com/ansible/ansible-examples/tree/master/wordpress-nginx).
+
+The IAM instance role and EC2 stuff has been copied from
+https://github.com/hashicorp/terraform/issues/5660.
 
 Of course, while preparing the Ansible configuration, I worked locally and
 created a simple Docker image in a tarfile, instead of commiting it and pushing
 it to ECR...
 
-The fact that I need to manage the EC2 instance for ECS is weird, I thought
-that this part was completely transparent and automatic. It makes ECS less sexy
-than I first thought.
-
-The IAM instance role and EC2 stuff has been copied from
-https://github.com/hashicorp/terraform/issues/5660.
+The fact that I need to manage the EC2 instance for ECS is disconcerting, I
+thought that this part was completely transparent and automatic. It makes ECS
+less sexy than I first thought.
 
 I had a hard time finding how to make Packer-generated images use resources
 defined later with Terraform. At the end, I decided to use environment
-variables so the image can be reused with different databases.
+variables so the image can be reused with different databases. Anyway, that's
+how Docker is used most of the time...
 
 Time spent from nothing to an existing Terraform+Packer+Ansible+Docker
 Wordpress mini-infrastructure (roughly):
 
 2017-05-14: 1h
 2017-05-15: 6h
-2017-05-16: 3h
+2017-05-16: 5h
