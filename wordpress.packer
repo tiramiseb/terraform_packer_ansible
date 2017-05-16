@@ -10,6 +10,9 @@
         {
             "type": "docker",
             "image": "ubuntu:latest",
+            "changes": [
+                "CMD [\"sh\", \"/tmp/start.sh\"]"
+            ],
             "commit": true
         }
     ],

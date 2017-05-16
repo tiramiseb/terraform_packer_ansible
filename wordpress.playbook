@@ -73,3 +73,8 @@
         group: wordpress
         state: directory
         recurse: yes
+    - name: Create the start script
+      copy:
+        src: start.sh
+        dest: /tmp/start.sh
+        mode: 0755
