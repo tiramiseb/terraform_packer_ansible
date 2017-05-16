@@ -71,7 +71,17 @@ When executing the `packer build` command:
 
 ### How components interact for infrastructure deployment
 
-XXX
+When executing the `terraform apply command`, Terraform creates all resources
+described in the `*.tf` files, while taking care of the dependencies between
+them:
+
+* the RDS database
+* the IAM role ans stuff for the EC2 instance
+* the EC2 instance
+* the ECS cluster
+* the ECS Wordpress task, which points to the previously uploaded image
+* the SG to allow access to the servers
+* the ECS Wordpress service itself, thus starting a container.
 
 ### Files in this repository
 
@@ -167,6 +177,8 @@ terraform destroy
 This example shows very simple stuff, insufficient for production usage... The
 following basic evolutions could be done:
 
+* Docker usage is really basic, honestly I'm really not satisfied about how I
+  have configured it.
 * Use templates instead of copying files, in order to make stuff more generic
   and allow re-using playbooks. Also, split the playbook into roles.
 * Do not use a single admin IAM role.
@@ -210,25 +222,20 @@ Of course, while preparing the Ansible configuration, I worked locally and
 created a simple Docker image in a tarfile, instead of commiting it and pushing
 it to ECR...
 
-The fact that I need to stard an EC2 instance for ECS is weird, I thought that
-this part was completely transparent and automatic. It makes ECS less sexy than
-I first thought.
+The fact that I need to manage the EC2 instance for ECS is weird, I thought
+that this part was completely transparent and automatic. It makes ECS less sexy
+than I first thought.
 
 The IAM instance role and EC2 stuff has been copied from
 https://github.com/hashicorp/terraform/issues/5660.
 
-In order to access the instance, I had to add an authorization for my IP
-address in the security group that was applied to the instance. This is not
-necessary for the infrastructure to work, so it is not done automatically.
-
 I had a hard time finding how to make Packer-generated images use resources
 defined later with Terraform. At the end, I decided to use environment
 variables so the image can be reused with different databases.
-
 
 Time spent from nothing to an existing Terraform+Packer+Ansible+Docker
 Wordpress mini-infrastructure (roughly):
 
 2017-05-14: 1h
 2017-05-15: 6h
-2017-05-16: 
+2017-05-16: 3h
