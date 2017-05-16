@@ -52,6 +52,15 @@ cd ..
 
 echo "    → Initializing secrets, etc"
 
+if [ -f ~/.ssh/id_rsa.pub ]
+then
+    SSH_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
+else
+    echo "!!! You have to create a SSH key as ~/.ssh/id_rsa."
+    echo "Run this script again afterwards"
+    exit 1
+fi
+
 . ./locally 2>/dev/null
 
 if [ -z "$AWS_ACCESS_KEY" ]
@@ -68,6 +77,6 @@ then
     AWS_LOGIN_SERVER=$(echo "$AWS_LOGIN_AND_REPOSITORY" | cut -d/ -f1)
     AWS_REPOSITORY=$(echo "$AWS_LOGIN_AND_REPOSITORY" | cut -d/ -f2)
 fi
-sed "s|ACCESS_KEY_HERE|$AWS_ACCESS_KEY|;s|SECRET_KEY_HERE|$AWS_SECRET_KEY|" authentication.tf.template > authentication.tf
+sed "s|ACCESS_KEY_HERE|$AWS_ACCESS_KEY|;s|SECRET_KEY_HERE|$AWS_SECRET_KEY|;s|SSH_PUBLIC_KEY_HERE|$SSH_PUBLIC_KEY|" authentication.tf.template > authentication.tf
 sed "s|ACCESS_KEY_HERE|$AWS_ACCESS_KEY|;s|SECRET_KEY_HERE|$AWS_SECRET_KEY|;s|LOGIN_SERVER_HERE|$AWS_LOGIN_SERVER|;s|REPOSITORY_HERE|$AWS_REPOSITORY|" locally.template > locally
 

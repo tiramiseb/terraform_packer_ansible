@@ -1,6 +1,13 @@
+
+# Define AWS credentials and region
 provider "aws" {
   access_key = "ACCESS_KEY_HERE"
   secret_key = "SECRET_KEY_HERE"
   region     = "eu-west-1"
 }
 
+# Define the SSH key to deploy to hosts
+resource "aws_key_pair" "deployer" {
+    key_name = "deployer"
+    public_key = "SSH_PUBLIC_KEY_HERE"
+}
