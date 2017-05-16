@@ -181,7 +181,9 @@ following basic evolutions could be done:
 There are many ways to improve this stuff:
 
 * First, use ELB for load balancing and therefore high availability.
-* Make a better use of Terraform possibilities (for instance, manage the ECR).
+* Make more stuff generic, in order to use a single image with different
+  setups (for instance, use environment vars or other sources to set NginX or
+  Wordpress configuration bits, like hostname etc).
 * Automate the monitoring configuration (either automatic discovery of services
   or definition in Terraform or Packer).
 * Probably many other possibilities...
@@ -201,6 +203,10 @@ Of course, while preparing the Ansible configuration, I worked locally and
 created a simple Docker image in a tarfile, instead of commiting it and pushing
 it to ECR...
 
+I had a hard time finding how to make Packer-generated images use resources
+defined later with Terraform. At the end, I decided to use environment
+variables so the image can be reused with different databases.
+
 Finally, I had no particular difficulties: these tools are fairly simple to
 use...
 
@@ -212,4 +218,4 @@ Wordpress mini-infrastructure (roughly):
 
 As usual, most of this time has been spent writing documentation (in this case,
 documentation is simply this README), I also took much time writing the Ansible
-playbook.
+playbook and finding how to make Packer and Terraform interact nicely.

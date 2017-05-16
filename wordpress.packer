@@ -30,7 +30,7 @@
             {
                   "type": "docker-tag",
                   "repository": "{{user `aws_login_server`}}/{{user `aws_repository_name`}}",
-                  "tag": "0.1"
+                  "tag": "0.2"
             },
             {
                   "type": "docker-push",
