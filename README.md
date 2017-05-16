@@ -98,7 +98,7 @@ them:
 
 Before being able to use this repository content, you need some stuff...
 
-Steps prefixed with "[x]" may be automatically done with the `initialize.sh`
+Steps prefixed with "!" may be automatically done with the `initialize.sh`
 script, along with some initialization steps (AWS auth, etc). This script has
 been tested on Ubuntu 17.04 and works only on Debian-based servers, with sudo
 activated (it must install Docker).
@@ -106,13 +106,13 @@ activated (it must install Docker).
 * Open an account on Amazon Web Services (https://aws.amazon.com/), create a
   user and activate API access (user management is done with the IAM service).
 * Create an EC2 Container Repository (see the ECS service).
-* [x] Install Terraform (packages are available on
+* ! Install Terraform (packages are available on
   https://www.terraform.io/downloads.html).
-* [x] Install Packer (packages are available on
+* ! Install Packer (packages are available on
   https://www.packer.io/downloads.html).
-* [x] Create authentication.tf from authentication.tf.template, with your
+* ! Create authentication.tf from authentication.tf.template, with your
   AWS authentication tokens.
-* [x] Create locally from locally.template, with your AWS authentication tokens
+* ! Create locally from locally.template, with your AWS authentication tokens
   and stuff.
 
 After these steps, to use what has been installed, you need to:
