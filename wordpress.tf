@@ -103,7 +103,6 @@ resource "aws_ecs_task_definition" "wordpress" {
                         "hostPort": 80
                     }
                 ],
-                "command": ["/sbin/init"],
                 "environment": [{
                   "name": "DB_HOST", "value": "${aws_db_instance.wordpress.address}"
                 }]
