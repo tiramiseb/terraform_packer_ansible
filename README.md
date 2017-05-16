@@ -241,6 +241,6 @@ how Docker is used most of the time...
 Time spent from nothing to an existing Terraform+Packer+Ansible+Docker
 Wordpress mini-infrastructure (roughly):
 
-2017-05-14: 1h
-2017-05-15: 6h
-2017-05-16: 5h
+* 2017-05-14: 1h
+* 2017-05-15: 6h
+* 2017-05-16: 5h
