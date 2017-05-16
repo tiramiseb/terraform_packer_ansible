@@ -166,6 +166,7 @@ following basic evolutions could be done:
 * Use templates instead of copying files, in order to make stuff more generic
   and allow re-using playbooks. Also, split the playbook into roles.
 * Improve global security (active users, files authorizations, etc).
+* Open only the needed network ports with security groups.
 * Install HTTPS support on the webserver, if it is not run behind a reverse
   proxy.
 * Separate the RDS admin authorization from the wordpress DB details.
