@@ -27,11 +27,13 @@ As for me, I already knew:
   environment.
 * Docker: I do not work daily with it, but I already experimented it (I didn't
   like it regarding how I worked at that moment, but it is perfect for the
-  needs of automation).
+  needs of automation addressed here).
 * Ansible: I tried in for 2 or 3 months in 2015, abandoned it in favor of
   SaltStack for professional reasons (I worked with long-running server, most
   important part was not to define how servers had to be installed but how they
-  must be maintained in a correct state).
+  must be maintained in a correct state, from this point of view SaltStack
+  seems better to me; moreover, with more than 50 servers, Ansible is way
+  slower than SaltStack, which itself feels too slow in my opinion).
 
 I also knew concepts which are common between tools. Ansible can be compared
 to SaltStack, Terraform can be compared to SaltCloud...
@@ -48,7 +50,8 @@ to SaltStack, Terraform can be compared to SaltCloud...
 * *ECS*, for *EC2 Container Service*, is a Docker containers service run on top
   of *Elastic Compute Cloud*: EC2 servers management is done by AWS tools,
   without any human intervention.
-* *ECR*, for *EC2 Container Repositories*, is a Docker images
+* *ECR*, for *EC2 Container Repositories*, is a Docker images repository
+  managed by AWS.
 * *Terraform* is a piece of software that creates infrastructures based on
   configuration files; once given access to a cloud service (or event to local
   services, eg. a VMware infrastructure or a Docker server), it can create
@@ -101,8 +104,8 @@ Before being able to use this repository content, you need some stuff...
 
 Steps prefixed with "!" may be automatically done with the `initialize.sh`
 script, along with some initialization steps (AWS auth, etc). This script has
-been tested on Ubuntu 17.04 and works only on Debian-based servers, with sudo
-activated (it must install Docker).
+been tested on Ubuntu 17.04 and works only on Debian-based servers (including
+Ubuntu), with sudo activated (it must install Docker).
 
 * Open an account on Amazon Web Services (https://aws.amazon.com/), create a
   user and activate API access (user management is done with the IAM service).
