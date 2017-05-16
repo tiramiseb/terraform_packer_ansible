@@ -93,7 +93,7 @@ resource "aws_ecs_task_definition" "wordpress" {
         [
             {
                 "name": "wordpress",
-                "image": "${var.login_server}/${var.repository}:0.2",
+                "image": "${var.login_server}/${var.repository}:0.3",
                 "memory": 512,
                 "memoryReservation": 128,
                 "essential": true,
