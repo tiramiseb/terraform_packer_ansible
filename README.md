@@ -213,7 +213,8 @@ There are many ways to improve this stuff:
 Independently of this exercise, I have started when AWS had a problem with new
 accounts creation: I could not try this stuff at first because I was unable to
 use these tools. It was fixed a few hours later but that points out the
-problems that may occur when relying on a single provider.
+problems that may occur when relying on a single provider. Moreover, pushes
+to ECR were painfully slow: 300kB/s.
 
 As recreating the Wordpress installation from scratch is not relevant, the
 Ansible configuration is inspired from the wordpress-nginx example
