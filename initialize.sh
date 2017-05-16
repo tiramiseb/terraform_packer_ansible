@@ -65,9 +65,9 @@ fi
 if [ -z "$AWS_LOGIN_SERVER" ]
 then
     read -p "Please provide your AWS ECR repository URI (see the ECS service): " AWS_LOGIN_AND_REPOSITORY
+    AWS_LOGIN_SERVER=$(echo "$AWS_LOGIN_AND_REPOSITORY" | cut -d/ -f1)
+    AWS_REPOSITORY=$(echo "$AWS_LOGIN_AND_REPOSITORY" | cut -d/ -f2)
 fi
-AWS_LOGIN_SERVER=$(echo "$AWS_LOGIN_AND_REPOSITORY" | cut -d/ -f1)
-AWS_REPOSITORY=$(echo "$AWS_LOGIN_AND_REPOSITORY" | cut -d/ -f2)
 sed "s|ACCESS_KEY_HERE|$AWS_ACCESS_KEY|;s|SECRET_KEY_HERE|$AWS_SECRET_KEY|" authentication.tf.template > authentication.tf
 sed "s|ACCESS_KEY_HERE|$AWS_ACCESS_KEY|;s|SECRET_KEY_HERE|$AWS_SECRET_KEY|;s|LOGIN_SERVER_HERE|$AWS_LOGIN_SERVER|;s|REPOSITORY_HERE|$AWS_REPOSITORY|" locally.template > locally
 
