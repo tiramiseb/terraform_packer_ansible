@@ -200,6 +200,7 @@ following basic evolutions could be done:
 There are many ways to improve this stuff:
 
 * First, use ELB for load balancing and therefore high availability.
+* Use a Multi-AZ database.
 * Use more variables to make more stuff generic.
 * Automate the monitoring configuration (either automatic discovery of services
   or definition in Terraform or Packer).
