@@ -13,7 +13,8 @@ single Wordpress container on an Amazon ECS cluster, using an RDS database.
 I tried to do something simple and avoid fancy stuff. May howtos or docs use
 fancy features to show how interesting it is, but my goal is to make something
 that "just works", hence the over-simplification, not use of some features
-(like ansible roles), etc.
+(like ansible roles), etc. In particular, I used as few variables as possible
+in the Terraform configuration, for the sake if simplicity.
 
 ### Previous knowledge
 
@@ -32,6 +33,9 @@ As for me, I already knew:
   SaltStack for professional reasons (I worked with long-running server, most
   important part was not to define how servers had to be installed but how they
   must be maintained in a correct state).
+
+I also knew concepts which are common between tools. Ansible can be compared
+to SaltStack, Terraform can be compared to SaltCloud...
 
 ## Components and their interactions
 
@@ -165,11 +169,14 @@ following basic evolutions could be done:
 
 * Use templates instead of copying files, in order to make stuff more generic
   and allow re-using playbooks. Also, split the playbook into roles.
+* Do not use a single admin IAM role.
 * Improve global security (active users, files authorizations, better password,
-  VPC, security group, etc).
+  VPC, security groups, etc) - current setup is really not secure and must not
+  be used in production.
 * Install HTTPS support on the webserver, if it is not run behind a reverse
   proxy.
 * Separate the RDS admin authorization from the wordpress DB details.
+* Centralize logs (in a syslog server, for instance).
 * Install a monitoring solution, in order to check everything is working
   correctly.
 * If local files may be modified (eg. media files upload), either use an
@@ -181,11 +188,11 @@ following basic evolutions could be done:
 There are many ways to improve this stuff:
 
 * First, use ELB for load balancing and therefore high availability.
-* Make more stuff generic, in order to use a single image with different
-  setups (for instance, use environment vars or other sources to set NginX or
-  Wordpress configuration bits, like hostname etc).
+* Use more variables to make more stuff generic.
 * Automate the monitoring configuration (either automatic discovery of services
   or definition in Terraform or Packer).
+* Rely on Auto Scaling for cluster instances, so that new instances are
+  launched whenever it is needed.
 * Probably many other possibilities...
 
 ## Difficulties and miscellaneous notes
@@ -203,19 +210,25 @@ Of course, while preparing the Ansible configuration, I worked locally and
 created a simple Docker image in a tarfile, instead of commiting it and pushing
 it to ECR...
 
+The fact that I need to stard an EC2 instance for ECS is weird, I thought that
+this part was completely transparent and automatic. It makes ECS less sexy than
+I first thought.
+
+The IAM instance role and EC2 stuff has been copied from
+https://github.com/hashicorp/terraform/issues/5660.
+
+In order to access the instance, I had to add an authorization for my IP
+address in the security group that was applied to the instance. This is not
+necessary for the infrastructure to work, so it is not done automatically.
+
 I had a hard time finding how to make Packer-generated images use resources
 defined later with Terraform. At the end, I decided to use environment
 variables so the image can be reused with different databases.
 
-Finally, I had no particular difficulties: these tools are fairly simple to
-use...
 
 Time spent from nothing to an existing Terraform+Packer+Ansible+Docker
 Wordpress mini-infrastructure (roughly):
 
 2017-05-14: 1h
 2017-05-15: 6h
-
-As usual, most of this time has been spent writing documentation (in this case,
-documentation is simply this README), I also took much time writing the Ansible
-playbook and finding how to make Packer and Terraform interact nicely.
+2017-05-16: 
