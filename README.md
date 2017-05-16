@@ -23,7 +23,8 @@ As for me, I already knew:
 
 * Wordpress: I know what it is for... for this exercise, it is not really
   relevant, apart from the fact I know how to install it.
-* Amazon Web Services: I already use this easy-to-user service.
+* Amazon Web Services: I already use this easy-to-use service in a professional
+  environment.
 * Docker: I do not work daily with it, but I already experimented it (I didn't
   like it regarding how I worked at that moment, but it is perfect for the
   needs of automation).
