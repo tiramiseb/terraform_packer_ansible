@@ -53,12 +53,12 @@ to SaltStack, Terraform can be compared to SaltCloud...
 * *ECR*, for *EC2 Container Repositories*, is a Docker images repository
   managed by AWS.
 * *Terraform* is a piece of software that creates infrastructures based on
-  configuration files; once given access to a cloud service (or event to local
+  configuration files; once given access to a cloud service (or even to local
   services, eg. a VMware infrastructure or a Docker server), it can create
   everything needed to make an infrastructure work.
 * *Packer* is a platform-agnostic tool allowing to create system images
   automatically, from a single configuration file.
-* *Ansible* is a IT automation tool, allowing to describe in configuration
+* *Ansible* is an IT automation tool, allowing to describe in configuration
   files how to install a server.
 
 ### How components interact for images preparation
@@ -73,7 +73,7 @@ When executing the `packer build` command:
 
 ### How components interact for infrastructure deployment
 
-When executing the `terraform apply command`, Terraform creates all resources
+When executing the `terraform applyi` command, Terraform creates all resources
 described in the `*.tf` files, while taking care of the dependencies between
 them:
 
@@ -114,7 +114,7 @@ Ubuntu), with sudo activated (it must install Docker).
   https://www.terraform.io/downloads.html).
 * ! Install Packer (packages are available on
   https://www.packer.io/downloads.html).
-* ! Create authentication.tf from authentication.tf.template, with your
+* ! Create `authentication.tf` from `authentication.tf.template`, with your
   AWS authentication tokens.
 * ! Create locally from locally.template, with your AWS authentication tokens
   and stuff.
@@ -213,7 +213,7 @@ There are many ways to improve this stuff:
 * Probably many other possibilities...
 
 Of course, some of these evolutions may be needed when putting in production,
-depending on the criticality of the service.
+depending on the criticity of the service.
 
 ## Difficulties and miscellaneous notes
 
@@ -221,7 +221,9 @@ Independently of this exercise itself, I have started when AWS had a problem
 with new accounts creation: I could not try this stuff at first because I was
 unable to use these tools. It was fixed a few hours later but that points out
 the problems that may occur when relying on a single provider. Moreover, pushes
-to ECR were painfully slow: 300kB/s.
+to ECR were painfully slow: 300kB/s - that's because I'm using an ADSL
+connection, in a production environment I would use a build server near the
+infrastructure, allowing fast transfers.
 
 The Ansible configuration is inspired from the wordpress-nginx example
 (https://github.com/ansible/ansible-examples/tree/master/wordpress-nginx).
