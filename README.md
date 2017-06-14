@@ -10,7 +10,7 @@ This exercise is motivated by a recruitment test for a startup company.
 The idea is to use Terraform, Packer and Ansible to automatically generate a
 single Wordpress container on an Amazon ECS cluster, using an RDS database.
 
-I tried to do something simple and avoid fancy stuff. May howtos or docs use
+I tried to do something simple and avoid fancy stuff. Many howtos or docs use
 fancy features to show how interesting it is, but my goal is to make something
 that "just works", hence the over-simplification.
 
